@@ -24,3 +24,17 @@
 
 
 # In addition, your final script should both print the analysis to the terminal and export a text file with the results.
+
+
+#import csv
+import csv
+with open('budget_data.csv', 'r') as csv_file:
+	# csv_reader = csv.reader(csv_file)
+	csv_reader = csv.DictReader(csv_file)
+	for line in csv_reader:
+		print(line)
+	# with open('new_data.csv', 'w') as new_file:
+	# 	csv_writer = csv.writer(new_file, delimiter='\t')
+
+	# 	for line in csv_reader:
+	# 		csv_writer.writerow(line)
