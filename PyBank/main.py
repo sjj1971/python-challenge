@@ -29,12 +29,48 @@
 #import csv
 import csv
 with open('budget_data.csv', 'r') as csv_file:
-	# csv_reader = csv.reader(csv_file)
-	csv_reader = csv.DictReader(csv_file)
-	for line in csv_reader:
-		print(line)
-	# with open('new_data.csv', 'w') as new_file:
-	# 	csv_writer = csv.writer(new_file, delimiter='\t')
+	csvReader = csv.DictReader(csv_file)
 
-	# 	for line in csv_reader:
-	# 		csv_writer.writerow(line)
+	totalDate = 0
+	totalAmount = 0
+	totalChange = 0
+	previousAmount = 0
+	maxIncrease = 0
+	maxDecrease = 0
+	
+	for row in csvReader:
+		tempDate = row['Date']
+		tempAmount = int(row['Profit/Losses'])
+
+# calculate total number of months
+		totalDate += 1
+# calculate net total amount of "Profit/Losses"
+		totalAmount += tempAmount
+
+# calculate amount of changes in "Profit/Losses" from second row
+		if totalDate > 1:
+			tempChange = tempAmount - previousAmount
+			totalChange += tempChange
+			previousAmount = tempAmount		
+
+#calculate greatest increase and greatest decrease in profits
+			if maxIncrease < tempChange:
+				maxIncrease = tempChange
+				maxIncreaseDate = tempDate
+			elif maxDecrease > tempChange:
+				maxDecrease = tempChange
+				maxDecreaseDate = tempDate
+			else: continue
+		elif totalDate == 1:
+			previousAmount = tempAmount
+		else: continue
+
+averageChange = totalChange / (totalDate-1)
+
+print('Financial Analysis')
+print('----------------------------')
+print('Total Months: {}'.format(totalDate))
+print('Total: ${}'.format(str(totalAmount)))
+print('Average  Change: ${}'.format(str(round(averageChange,2))))
+print('Greatest Increase in Profits: {} (${})'.format(maxIncreaseDate, str(maxIncrease)))
+print('Greatest Decrease in Profits: {} (${})'.format(maxDecreaseDate, str(maxDecrease)))
