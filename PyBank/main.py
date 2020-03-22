@@ -27,8 +27,12 @@
 
 
 #import csv
+import os
 import csv
-with open('budget_data.csv', 'r') as csv_file:
+
+filePath = os.path.join("Resources", "budget_data.csv")
+
+with open(filePath, 'r', encoding='utf-8', newline='') as csv_file:
 	csvReader = csv.DictReader(csv_file)
 
 	totalDate = 0
