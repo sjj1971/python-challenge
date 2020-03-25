@@ -17,13 +17,25 @@ with open(filePath,'r',encoding='utf-8',newline='') as csvFile:
 
 	pollData = csv.DictReader(csvFile, delimiter=',')
 
+# number of votes
 	nVotes = 0
+
+# Set of Candidate name who received votes
 	CandidateName = set()
+
+# New dictionary with Candidate name with number of received votes
 	CandidateDict = {}
 	
 	for row in pollData:
 		nVotes += 1
 		tempCandidate = row["Candidate"]
+
+		# if tempCandidate in CandidateDict.keys():
+		# 	CandidateDict[tempCandidate] += 1
+		# else:
+		# 	CandidateDict[tempCandidate] = 1
+
+		# Count number of vote for each Candidate using CandidateName set (old code)
 		if tempCandidate not in CandidateName:
 			CandidateName.add(tempCandidate)
 			CandidateDict[tempCandidate] = 1
@@ -35,15 +47,14 @@ with open(filePath,'r',encoding='utf-8',newline='') as csvFile:
 	print(f"Total Votes: {nVotes}")
 	print("-------------------------")
 
+# Print each Candidate with ratio of received votes and number of received votes.
 	sorted(CandidateDict)
-	winner = ''
-	winnerAmount = 0
 	for x in CandidateDict.keys():
 	  	Ratio = round(CandidateDict[x] / nVotes * 100, 3)
 	  	print(f"{x}: {Ratio}% ({CandidateDict[x]}) ")
-	  	if winnerAmount < CandidateDict[x]:
-	  		winner = x
-	  		winnerAmount = CandidateDict[x]
+
+# Find winner of Candidate using max function
+	winner = max(CandidateDict, key=CandidateDict.get)
 
 	print("-------------------------")
 	print(f"Winner: {winner}")
